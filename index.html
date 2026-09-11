@@ -2,93 +2,95 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#05060a" />
-  <title>Neon Muscle: Street Rivals</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="theme-color" content="#05070c" />
+  <meta name="description" content="Midnight Racers — a cinematic neon street-racing arcade game." />
+  <title>Midnight Racers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Inter:wght@400;500;600;700;800&family=Permanent+Marker&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main id="gameShell">
-    <canvas id="gameCanvas" aria-label="Arcade street racing game"></canvas>
+    <canvas id="gameCanvas" aria-label="Midnight Racers arcade racing game"></canvas>
+    <div class="film-vignette"></div>
+    <div class="scanlines"></div>
 
     <section id="hud" class="hidden" aria-live="polite">
-      <div class="hud-left glass">
-        <span class="eyebrow">POSITION</span>
-        <strong id="position">6 / 6</strong>
+      <div class="hud-block hud-left glass">
+        <span>POSITION</span><strong id="position">6 / 6</strong>
+        <small id="rivalText">HUNT THE LEADER</small>
       </div>
-      <div class="hud-center">
-        <div class="speed-wrap glass">
-          <span id="speed">0</span><small>MPH</small>
-        </div>
-        <div class="nitro-track"><div id="nitroBar"></div></div>
-        <span class="nitro-label">NITRO</span>
+      <div class="hud-top-center glass">
+        <span id="checkpointText">MIDNIGHT EXPRESSWAY</span>
+        <strong id="raceTime">00:00.0</strong>
       </div>
-      <div class="hud-right glass">
-        <span class="eyebrow">DISTANCE</span>
-        <strong id="distance">0%</strong>
+      <div class="hud-block hud-right glass">
+        <span>PROGRESS</span><strong id="distance">0%</strong>
+        <small id="distanceMeters">0 / 8.0 KM</small>
+      </div>
+
+      <div class="speedometer glass">
+        <div class="speed-line"><strong id="speed">0</strong><span>MPH</span></div>
+        <div class="gear-line">GEAR <b id="gear">1</b></div>
+        <div class="nitro-shell"><div id="nitroBar"></div></div>
+        <small>NITRO</small>
       </div>
     </section>
 
+    <div id="countdown" class="countdown hidden">3</div>
+    <div id="raceMessage" class="race-message hidden">CLEAN OVERTAKE + NITRO</div>
+
     <section id="startScreen" class="screen active">
-      <div class="title-stack">
-        <p class="kicker">AN ORIGINAL NIGHT STREET RACING GAME</p>
-        <h1>NEON <span>MUSCLE</span></h1>
-        <h2>STREET RIVALS</h2>
-        <p class="lede">Big V8 energy. Downtown lights. One midnight run to own the city.</p>
+      <div class="hero-copy">
+        <p class="overline">AN ORIGINAL CINEMATIC STREET-RACING ARCADE GAME</p>
+        <div class="logo-lockup" aria-label="Midnight Racers">
+          <h1>MIDNIGHT</h1>
+          <h2>RACERS</h2>
+        </div>
+        <p class="tagline">FAST CARS <i></i> NO LIMITS <i></i> OWN THE NIGHT</p>
+        <p class="intro">Rain-slick streets, roaring V8s, neon skylines and one ruthless midnight sprint through the city.</p>
       </div>
 
-      <div class="car-select glass-panel">
-        <div class="section-label">CHOOSE YOUR MACHINE</div>
-        <div class="cars" id="carOptions">
-          <button class="car-card selected" data-car="0">
-            <span class="car-swatch phantom"></span>
-            <b>V8 PHANTOM</b><small>Balanced</small>
-          </button>
-          <button class="car-card" data-car="1">
-            <span class="car-swatch cobra"></span>
-            <b>COBRA XR</b><small>Acceleration</small>
-          </button>
-          <button class="car-card" data-car="2">
-            <span class="car-swatch liberty"></span>
-            <b>LIBERTY GT</b><small>Top Speed</small>
-          </button>
-          <button class="car-card" data-car="3">
-            <span class="car-swatch venom"></span>
-            <b>VENOM ZR</b><small>Handling</small>
-          </button>
+      <div class="garage glass-panel">
+        <div class="garage-head">
+          <div><small>SELECT YOUR CAR</small><strong id="selectedName">BLACKFIRE R/T</strong></div>
+          <div class="stat-summary"><span>POWER <b id="powerStat">92</b></span><span>TOP SPEED <b id="speedStat">91</b></span><span>HANDLING <b id="handlingStat">76</b></span></div>
+        </div>
+        <div class="car-list" id="carOptions">
+          <button class="car-card selected" data-car="0"><span class="mini-car blackfire"></span><b>BLACKFIRE R/T</b><small>Muscle · Balanced</small></button>
+          <button class="car-card" data-car="1"><span class="mini-car redhawk"></span><b>REDHAWK XR</b><small>Muscle · Acceleration</small></button>
+          <button class="car-card" data-car="2"><span class="mini-car ghostline"></span><b>GHOSTLINE Z</b><small>Sport · Top speed</small></button>
+          <button class="car-card" data-car="3"><span class="mini-car nightstalker"></span><b>NIGHTSTALKER GT</b><small>Muscle · Handling</small></button>
         </div>
       </div>
 
-      <button id="startBtn" class="primary-btn">START MIDNIGHT RUN <span>→</span></button>
-      <p class="controls-copy">W / ↑ accelerate · S / ↓ brake · A D / ← → steer · SHIFT nitro</p>
+      <div class="menu-actions">
+        <button id="startBtn" class="primary-btn"><span>START THE MIDNIGHT RUN</span><b>→</b></button>
+        <p>W / ↑ accelerate &nbsp;·&nbsp; S / ↓ brake &nbsp;·&nbsp; A D / ← → steer &nbsp;·&nbsp; SHIFT nitro</p>
+      </div>
     </section>
 
     <section id="finishScreen" class="screen">
       <div class="finish-card glass-panel">
-        <p class="kicker">RACE COMPLETE</p>
-        <h2 id="finishTitle">MIDNIGHT OWNED.</h2>
+        <p class="overline">RACE COMPLETE</p>
+        <h2 id="finishTitle">YOU OWN THE NIGHT.</h2>
         <div class="result-grid">
           <div><span>FINISH</span><b id="finishPosition">1st</b></div>
           <div><span>TIME</span><b id="finishTime">00:00.0</b></div>
           <div><span>TOP SPEED</span><b id="topSpeed">0 MPH</b></div>
         </div>
-        <button id="restartBtn" class="primary-btn">RACE AGAIN <span>↻</span></button>
+        <button id="restartBtn" class="primary-btn"><span>RACE AGAIN</span><b>↻</b></button>
       </div>
     </section>
 
     <div id="mobileControls" class="mobile-controls hidden" aria-label="Touch controls">
-      <div class="touch-cluster">
-        <button id="leftBtn" aria-label="Steer left">◀</button>
-        <button id="rightBtn" aria-label="Steer right">▶</button>
-      </div>
-      <div class="touch-cluster right">
-        <button id="brakeBtn" class="brake" aria-label="Brake">BRAKE</button>
-        <button id="gasBtn" class="gas" aria-label="Accelerate">GAS</button>
-        <button id="nitroBtn" class="nitro" aria-label="Nitro">N₂O</button>
-      </div>
+      <div class="touch-cluster"><button id="leftBtn">◀</button><button id="rightBtn">▶</button></div>
+      <div class="touch-cluster right"><button id="brakeBtn" class="brake">BRAKE</button><button id="gasBtn" class="gas">GAS</button><button id="nitroBtn" class="nitro">N₂O</button></div>
     </div>
 
-    <div class="credit">CREATED AS AN ORIGINAL ARCADE PROTOTYPE</div>
+    <div class="corner-credit">MIDNIGHT RACERS · ORIGINAL WEB ARCADE PROTOTYPE</div>
   </main>
   <script src="game.js"></script>
 </body>
